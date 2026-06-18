@@ -375,7 +375,7 @@
    A BFD session is bootstrapped using LSP Ping.  This specification
    describes procedures only for BFD asynchronous mode.  BFD demand mode
    is outside the scope of this specification.  Further, the use of the
-   Echo function is outside the scope of this specification.  The
+   BFD Echo function is outside the scope of this specification.  The
    initiation of fault detection for a particular &lt;MPLS LSP, FEC&gt;
    combination results in the exchange of LSP Ping Echo request and Echo
    reply packets, in the ping mode, between the ingress and egress LSRs
@@ -490,6 +490,56 @@
    if the My Discriminator or the Source IP address fields of the
    received packet do not match the values associated with the session.</t>
     </section>
+
+
+
+    <section anchor="sect-77" numbered="true" toc="default">
+    <name>Procedures for multiple BFD over MPLS sessions</name>
+    <section title="Procedures for establishment of multiple BFD sessions ">
+    <t>Section 4 of <xref target="RFC5884" /> specifies the procedure for bootstrapping BFD sessions using LSP ping. It further states that "a BFD session SHOULD be established for each alternate path that is discovered". This requirement has been the source of some ambiguity as the procedures of establishing concurrent, multiple sessions have not been explicitly specified. This ambiguity can also be attributed in part to the text in Section 7 of <xref target="RFC5884" /> forbidding either end to change local discriminator values in BFD control packets after the session reaches the UP state. The following procedures are described to clarify the ambiguity based on the interpretation of the authors's reading of the referenced sections: 
+    </t>
+    <t>
+    At the ingress LSR:</t>
+    <ul>
+    <li>MPLS LSP ping can be used to bootstrap multiple BFD sessions for a given &lt;MPLS FEC, LSP&gt;. Each LSP ping MUST carry a different discriminator value in the BFD discriminator TLV <xref target="RFC4379" />.</li>
+    </ul>
+    <t>The egress LSR needs to perform the following:</t>
+    <ul>
+    <li>If the validation of the FEC in the MPLS Echo request message succeeds, check the discriminator specified in the BFD discriminator TLV of the MPLS Echo request. If there is no local session that corresponds to the (remote) discriminator received in the MPLS Echo request, a new session is bootstrapped and a local discriminator is allocated. The validation of a FEC is a necessary condition to be satisfied to create a new BFD session at the egress LSR. However, the policy or procedure if any, to be applied by the egress LSR before allowing a new BFD session to be created is outside the scope of this document. Such policies or procedures could consider availability of system resources before allowing a session to be created. When the egress LSR disallows the creation of a BFD session due to policy, it MUST drop the MPLS Echo request message.</li>
+    <li> Ensure the uniqueness of the &lt;MPLS FEC, LSP, Remote Discriminiator&gt; tuple.</li>
+    <li>Except for the clarification mentioned above, the remaining procedures of BFD session establishment are as specified in Sections 4-6 of <xref target="RFC5884" />.</li>
+    </ul>
+    </section>
+
+    <section title="Procedures for maintenance of multiple BFD sessions ">
+    <t>Both the ingress LSR and egress LSR use the YourDiscriminator of the received BFD packet to demultiplex BFD sessions.</t>
+    </section>
+
+    <section title="Procedures for removing BFD sessions at the egress LSR">
+    <t> <xref target="RFC5884" /> does not specify an explicit procedure for deleting BFD sessions. The procedure for removing a BFD session established by an out-of-band discriminator exchange using the MPLS LSP ping can improve resource management (like memory etc.) especially in scenarios involving thousands or more of such sessions. A few observations are made here:</t>
+    <ul>
+    <li> The BFD session MAY be removed in the egress LSR if the BFD session transitions from UP to DOWN.  This can either be done immediately after the BFD session transitions from UP to DOWN  or after the  expiry of a configurable timer started after the BFD  session state  transitions from UP to DOWN at the egress LSR to reduce flapping by adding hysteresis.</li>
+
+    <li>The BFD session on the egress LSR MAY be removed by the ingress LSR by using the BFD diagnostic code AdminDown(7) as specified in <xref target="RFC5880" />. When the ingress LSR wants to remove a session without triggering any state change at the egress, it MAY transmit BFD packets indicating the State as Down(1), diagnostic code AdminDown(7) detectMultiplier number of times. Upon receiving such a packet, the egress LSR MAY remove the BFD session, without triggering a change of state. </li>
+    <li>The procedures to be followed at the egress LSR when BFD session(s) remain in the DOWN state for a significant amount of time is a local matter. Such procedures are outside the scope of this document. </li>
+    <li> All BFD sessions established with the FEC MUST be removed automatically if the FEC is removed.</li>
+    <li> The egress MUST use the discriminators exchanged when the session was brought UP, to indicate any session state change to the ingress. The egress SHOULD reset this to zero after transmitting bfd.detectMult number of packets if the BFD session transitions to DOWN state.  </li>
+    </ul>
+    </section>
+
+    <section title="Changing discriminators for a BFD session">
+    <t>The discriminators of a BFD session established over an MPLS LSP cannot be changed when it is in UP state. The BFD session could be removed after a graceful transition to AdminDown state using the BFD diagnostic code AdminDown. A new session could be established with a different discriminator. The initiation of the transition from the Up to Down state can be done either by the ingress LSR or the egress LSR.</t>
+    </section>
+
+ 
+    <section anchor="sect-77.5" numbered="true" toc="default">
+    <name>Backwards Compatibility</name>
+<t> The procedures clarified by this document are fully backward compatible with an existing implementation of <xref target="RFC5884" />. While the capability to bootstrap and maintain multiple BFD sessions may not be present in current implementations, the procedures outlined by this document can be implemented as a software upgrade without affecting existing sessions. In particular, the egress LSR needs to support multiple BFD sessions per &lt;MPLS FEC, LSP&gt; before the ingress LSR is upgraded. </t>
+    </section>
+   </section>
+
+
+
     <section anchor="sect-8" numbered="true" toc="default">
       <name>Security Considerations</name>
       <t>
@@ -500,6 +550,7 @@
    apply.  These are discussed in <xref target="RFC5920" format="default"/>.  When BFD Control packets
    sent by the egress LSR are routed, the authentication considerations
    discussed in <xref target="RFC5883"/> should be followed.</t>
+      <t> It is highly important to ensure only minimum number of BFD sessions are provisioned per FEC, and bootstrapped BFD sessions are properly deleted when no longer required. Additionally security measures described in <xref target="RFC4379" /> and <xref target="RFC5884" /> are to be followed.</t>
     </section>
     <section anchor="sect-9" numbered="true" toc="default">
       <name>IANA Considerations</name>
@@ -510,12 +561,7 @@
     </section>
     <section anchor="sect-10" numbered="true" toc="default">
       <name>Acknowledgments</name>
-      <t>
-   We would like to thank Yakov Rekhter, Dave Katz, and Ina Minei for
-   contributing to the discussions that formed the basis of this
-   document and for their comments.  Thanks to Dimitri Papadimitriou for
-   his comments and review.  Thanks to Carlos Pignataro for his comments
-   and review.</t>
+      <t> TBD </t>
     </section>
   </middle>
   <back>
