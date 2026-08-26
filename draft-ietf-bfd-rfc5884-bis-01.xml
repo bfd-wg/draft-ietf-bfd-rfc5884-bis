@@ -121,7 +121,7 @@
    is to track the liveness of a Multiprotocol Label Switching (MPLS)
    Label Switched Path (LSP).  In particular, BFD can be used to detect
    a data plane failure in the forwarding path of an MPLS LSP.  LSP Ping
-   <xref target="RFC4379" format="default"/> is an existing mechanism for detecting MPLS LSP data plane
+   <xref target="RFC8029" format="default"/> is an existing mechanism for detecting MPLS LSP data plane
    failures and for verifying the MPLS LSP data plane against the
    control plane.  This document describes the applicability of BFD in
    relation to LSP Ping for detecting MPLS LSP data plane failures.  It
@@ -147,7 +147,7 @@
       <section anchor="sect-3.1" numbered="true" toc="default">
         <name>BFD for MPLS LSPs: Motivation</name>
         <t>
-   LSP Ping described in <xref target="RFC4379" format="default"/> is an existing mechanism for
+   LSP Ping described in <xref target="RFC8029" format="default"/> is an existing mechanism for
    detecting an MPLS LSP data plane failure.  In addition, LSP Ping also
    provides a mechanism for verifying the MPLS control plane against the
    data plane.  This is done by ensuring that the LSP is mapped to the
@@ -450,7 +450,7 @@
    detection is being performed.  If the label stack has a depth greater
    than one, the TTL of the inner MPLS label MAY be set to 1.  This may
    be necessary for certain FECs to enable the egress LSR's control
-   plane to receive the packet <xref target="RFC4379"/>.  For MPLS PWs, alternatively,
+   plane to receive the packet <xref target="RFC8029"/>.  For MPLS PWs, alternatively,
    the presence of a fault detection message may be indicated by setting
    a bit in the control word <xref target="RFC5885"/>.</t>
       <t>
@@ -465,14 +465,14 @@
    Ping traceroute.  In this case, the destination IP address, used in a
    BFD session established for one such alternate path, is the address
    in the 127/8 range for IPv4 or 0:0:0:0:0:FFFF:7F00:0/104 range for IPv6
-   discovered by LSP Ping traceroute <xref target="RFC4379" format="default"/> to exercise that
+   discovered by LSP Ping traceroute <xref target="RFC8029" format="default"/> to exercise that
    particular alternate path.</t>
       <t>
    The motivation for using the address range 127/8 is the same as
-   specified in Section 2.1 of <xref target="RFC4379" format="default"/>.  This is an exception to the
+   specified in Section 2.1 of <xref target="RFC8029" format="default"/>.  This is an exception to the
    behavior defined in <xref target="RFC1122" format="default"/>.</t>
       <t>
-   The IP TTL or hop limit MUST be set to 1 <xref target="RFC4379" format="default"/>.</t>
+   The IP TTL or hop limit MUST be set to 1 <xref target="RFC8029" format="default"/>.</t>
       <t>
    BFD Control packets sent by the egress LSR are UDP packets.  The
    source IP address is a routable address of the replier.</t>
@@ -519,7 +519,7 @@
     <t>
     At the ingress LSR:</t>
     <ul>
-    <li>MPLS LSP ping can be used to bootstrap multiple BFD sessions for a given &lt;MPLS FEC, LSP&gt;. Each LSP ping MUST carry a different discriminator value in the BFD discriminator TLV <xref target="RFC4379" />.</li>
+    <li>MPLS LSP ping can be used to bootstrap multiple BFD sessions for a given &lt;MPLS FEC, LSP&gt;. Each LSP ping MUST carry a different discriminator value in the BFD discriminator TLV <xref target="RFC8029" />.</li>
     </ul>
     <t>The egress LSR needs to perform the following:</t>
     <ul>
@@ -561,14 +561,14 @@
     <section anchor="sect-8" numbered="true" toc="default">
       <name>Security Considerations</name>
       <t>
-   Security considerations discussed in <xref target="RFC5880"/>, <xref target="RFC5883"/>, and <xref target="RFC4379" format="default"/>
+   Security considerations discussed in <xref target="RFC5880"/>, <xref target="RFC5883"/>, and <xref target="RFC8029" format="default"/>
    apply to this document.  For BFD Control packets sent by the ingress
    LSR or when the BFD Control packet sent by the egress LSR are
    encapsulated in an MPLS label stack, MPLS security considerations
    apply.  These are discussed in <xref target="RFC5920" format="default"/>.  When BFD Control packets
    sent by the egress LSR are routed, the authentication considerations
    discussed in <xref target="RFC5883"/> should be followed.</t>
-      <t> It is highly important to ensure only minimum number of BFD sessions are provisioned per FEC, and bootstrapped BFD sessions are properly deleted when no longer required. Additionally security measures described in <xref target="RFC4379" /> and <xref target="RFC5884" /> are to be followed.</t>
+      <t> It is highly important to ensure only minimum number of BFD sessions are provisioned per FEC, and bootstrapped BFD sessions are properly deleted when no longer required. Additionally security measures described in <xref target="RFC8029" /> and <xref target="RFC5884" /> are to be followed.</t>
     </section>
     <section anchor="sect-9" numbered="true" toc="default">
       <name>IANA Considerations</name>
@@ -600,7 +600,7 @@
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4090.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4364.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4377.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4379.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8029.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4447.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.5036.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.5883.xml"/>
