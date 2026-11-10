@@ -745,6 +745,74 @@
 	<dd>TBF</dd>
 	</dl>
 	</section>
+	<section title="HPE">
+	<dl newline="true">
+	<dt>Organization:</dt>
+	<dd>HPE (Juniper)</dd>
+	<dt>Implementation Name:</dt>
+	<dd>Junos OS / Junos OS Evolved</dd>
+	<dt>Description:</dt>
+	<dd>BFD for MPLS LSPs</dd>
+	<dt>Maturity:</dt>
+	<dd>Production</dd>
+	<dt>Coverage:</dt>
+	<dd>
+	<ul>
+	<li>Section x.</li>
+        <li>RFC5884 - 3.2: Bootstrapping BFD over LSP using LSP ping: <strong>Implemented</strong></li>
+        <li>RFC5884 - 3.2: Setting BFD fault detection parameters for the LSP: <strong>Implemented</strong></li>
+        <li>RFC5884 - 4.0: Periodic LSP Ping echo request messages: <strong>Implemented</strong></li>
+        <li>RFC5884 - 4.0: Configuration knobs for enablement and operation of BFD and LSP ping: <strong>Implemented</strong></li>
+        <li>RFC5884 - 5.0: Demultiplexing logic for BFD sessions based on remote Discriminator: <strong>Implemented</strong></li>
+        <li>RFC5884 - 6.0: LSP Ping Echo request message with local discriminator for session 
+                      establishment using BFD Discriminator TLV (Sec 6.1): <strong>Implemented</strong></li>
+        <li>RFC5884 - 6.0: Egress LSR validates FEC and follows procedures for discriminators: <strong>Implemented</strong></li>
+        <li>RFC5883 - 6.0: How does the ingress LER handle the case when the Mydiscriminator returned in the BFD packet
+                      differs from the discriminator value returned in the LSP Ping Echo reply? <strong>Implemented</strong></li>
+        <li>RFC5884 - 7.0: Dataplane formats for BFD over MPLS using TTL=1: <strong>Partially implemented</strong> - TTL is NOT forced to 1, by default. The packet keeps the BFD default TTL (BFD_TTL = 255) unless the 'use-ip-ttl-1' knob is configured. </li>
+
+        <li>RFC5880 - 6.3: unique discriminator per session: <strong>Implemented</strong></li>
+        <!-- - 6.4: Echo Function -->
+        <li>RFC5880 6.5: Poll Sequence: <strong>Implemented</strong></li>
+        <!-- - 6.6: Demand Mode -->
+        <li>RFC5880 6.7: Authentication </li>
+        <li>RFC5880 6.7.2: Simple Password Authentication: <strong>Not implemented</strong></li>
+        <li>RFC5880 6.7.3: Keyed MD5 and Meticulous Keyed MD5 Authentication: <strong>Not implemented</strong></li>
+        <li>RFC5880 6.7.4: Keyed SHA1 and Meticulous Keyed SHA1 Authentication: <strong>Not implemented</strong></li>
+        <li>RFC5880 6.8.1: State Variables: <strong>Implemented</strong></li>
+        <li>RFC5880 6.8.2: Timer Negotiation: <strong>Implemented</strong></li>
+        <li>RFC5880 6.8.3: Timer Manipulation: <strong>Implemented</strong></li>
+        <li>RFC5880 6.8.4: Detection Time Calculation: <strong>Implemented</strong></li>
+        <!-- - 6.8.5: Echo Function Failure Detection -->
+        <li>RFC5880 6.8.6: Reception of BFD Control Packets: Implemented</li>
+        <li>RFC5880 6.8.7: Transmitting BFD Control Packets: <strong>Implemented</strong></li>
+        <li>RFC5880 6.8.7: What source/destination IPv6 loopback addresses are used for BFD control packets over IPv6 LSPs? <strong>Partially implemented</strong> - LSP-ping-bootstrapped BFD for IPv6 LDP,RSVP-TE and PW LSPs does not exist.  LDP OAM FEC addresses are IPv4 prefixes.</li>
+        <!-- - 6.8.8: Reception of BFD Echo Packets
+        <li>RFC5880 6.8.9: Transmission of BFD Echo Packets -->
+        <li>RFC5880 6.8.10: Min Rx Interval Change: <strong>Implemented</strong></li>
+        <li>RFC5880 6.8.11: Min Tx Interval Change: <strong>Implemented</strong></li>
+        <li>RFC5880 6.8.12: Detect Multiplier Change: <strong>Implemented</strong></li>
+        <!-- - 6.8.13: Enabling or Disabling The Echo Function
+        <li>RFC5880 6.8.14: Enabling or Disabling Demand Mode-->
+        <li>RFC5880 6.8.15: Forwarding Plane Reset: <strong>Implemented</strong></li>
+        <li>RFC5880 6.8.16: Administrative Control: <strong>Implemented</strong></li>
+        <li>RFC5880 6.8.17: Concatenated Paths: <strong>Not implemented</strong></li>
+        <li>RFC5880 6.8.18: Session Hold Down: <strong>Partially implemented</strong> - holddown-interval delays the Up notification to the client. The RFC's AdminDown hold-down after session creation is not strictly implemented.</li>
+        <li>RFC5880 9: Generalized TTL Security Mechanism: <strong>TBD</strong></li>
+	</ul>
+	</dd>
+	<dt>Version Compatibility:</dt>
+	<dd>BFD version 1 (RFC 5880) with automatic negotiation down to legacy version 0; LSP ping per RFC 4379. Ingress behavior is governed by local configuration. Auto-created egress sessions use fixed defaults.</dd>
+	<dt>Licensing:</dt>
+	<dd>Proprietary</dd>
+	<dt>Implementation Experience:</dt>
+	<dd>18 years</dd>
+	<dt>Contact Information:</dt>
+	<dd>Santhi Raju Challapalli (santhi-raju.challapalli@hpe.com)</dd>
+	<dt>Last Updated:</dt>
+	<dd>2026-10-06</dd>
+	</dl>
+	</section>
 	</section>
 
   </back>
